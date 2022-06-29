@@ -57,10 +57,14 @@
       "json",
       "ts"
     ],
-    "rootDir": "src",
+    "rootDir": ".",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "moduleNameMapper": {
+      "@modules/(.*)$": "<rootDir>/src/modules/$1",
+      "@adapters/(.*)$": "<rootDir>/src/adapters/$1"
     },
     "collectCoverageFrom": [
       "**/*.(t|j)s"
