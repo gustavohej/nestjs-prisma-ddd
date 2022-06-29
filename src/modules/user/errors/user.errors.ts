@@ -1,3 +1,12 @@
+export class UserNotFoundError extends Error {
+  static readonly message = 'User not found';
+  readonly code = 'USER.NOT_FOUND';
+
+  constructor() {
+    super(UserNotFoundError.message);
+  }
+}
+
 export class EmailAlreadyExistsError extends Error {
   static readonly message = 'Email already exists';
   readonly code = 'EMAIL.ALREADY_EXISTS';

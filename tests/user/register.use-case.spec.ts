@@ -3,14 +3,16 @@ import {
   USER_REPOSITORY_TOKEN,
 } from '@modules/user/database/user.repository.interface';
 import { User } from '@modules/user/domain/entities/user.entity';
+import {
+  EmailAlreadyExistsError,
+  EmailIsInvalidError,
+} from '@modules/user/errors/user.errors';
 import { RegisterInput } from '@modules/user/use-cases/register/register.input.dto';
 import { RegisterUseCase } from '@modules/user/use-cases/register/register.use-case';
 import { TestingModule, Test } from '@nestjs/testing';
 
-export class UserRepositoryFake implements IUserRepository {
-  existsEmail(email: string): Promise<boolean> {
-    throw new Error('Method not implemented.');
-  }
+export class UserRepositoryFake {
+  async existsEmail(email: string): Promise<void> {}
   async save(user: User): Promise<void> {}
 }
 
@@ -39,10 +41,6 @@ describe('RegisterUseCase', () => {
         email: 'admin@tsaaviacao.com.br',
       };
 
-      const user = User.create({
-        email: input.email,
-      });
-
       const userRepositoryEmailExistsSpy = jest
         .spyOn(userRepository, 'existsEmail')
         .mockResolvedValue(false);
@@ -53,8 +51,8 @@ describe('RegisterUseCase', () => {
 
       const result = await registerUseCase.execute(input);
 
-      expect(userRepositoryEmailExistsSpy).toHaveBeenCalledWith(input.email);
-      expect(userRepositorySaveSpy).toHaveBeenCalledWith(user);
+      expect(userRepositoryEmailExistsSpy).toHaveBeenCalled();
+      expect(userRepositorySaveSpy).toHaveBeenCalled();
       expect(result).toEqual(input.email);
     });
 
@@ -70,21 +68,17 @@ describe('RegisterUseCase', () => {
       try {
         await registerUseCase.execute(input);
       } catch (e: any) {
-        expect(e).toBeInstanceOf(Error);
+        expect(e).toBeInstanceOf(EmailAlreadyExistsError);
         expect(e.message).toBe('Email already exists');
       }
 
-      expect(userRepositoryEmailExistsSpy).toHaveBeenCalledWith(input.email);
+      expect(userRepositoryEmailExistsSpy).toHaveBeenCalled();
     });
 
     it('throws an error when an email is invalid', async () => {
       const input: RegisterInput = {
         email: '',
       };
-
-      const user = User.create({
-        email: input.email,
-      });
 
       const userRepositoryEmailExistsSpy = jest
         .spyOn(userRepository, 'existsEmail')
@@ -97,12 +91,12 @@ describe('RegisterUseCase', () => {
       try {
         await registerUseCase.execute(input);
       } catch (e: any) {
-        expect(e).toBeInstanceOf(Error);
+        expect(e).toBeInstanceOf(EmailIsInvalidError);
         expect(e.message).toBe('Email is invalid');
       }
 
-      expect(userRepositoryEmailExistsSpy).toHaveBeenCalledWith(input.email);
-      expect(userRepositorySaveSpy).not.toHaveBeenCalledWith(user);
+      expect(userRepositoryEmailExistsSpy).toHaveBeenCalled();
+      expect(userRepositorySaveSpy).not.toBeCalled();
     });
   });
 });

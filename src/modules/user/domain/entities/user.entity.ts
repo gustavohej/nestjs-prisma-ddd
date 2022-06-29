@@ -23,4 +23,8 @@ export class User {
     const user = new User(props);
     return user;
   }
+
+  changeEmail(email: string): void {
+    this.props.email = email;
+  }
 }
