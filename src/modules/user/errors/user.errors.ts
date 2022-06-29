@@ -6,3 +6,12 @@ export class EmailAlreadyExistsError extends Error {
     super(EmailAlreadyExistsError.message);
   }
 }
+
+export class EmailIsInvalidError extends Error {
+  static readonly message = 'Email is invalid';
+  readonly code = 'EMAIL.IS_INVALID';
+
+  constructor() {
+    super(EmailIsInvalidError.message);
+  }
+}

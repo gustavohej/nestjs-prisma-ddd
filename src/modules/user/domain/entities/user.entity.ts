@@ -1,3 +1,5 @@
+import { EmailIsInvalidError } from '@modules/user/errors/user.errors';
+
 export interface CreateUserProps {
   email: string;
 }
@@ -12,6 +14,9 @@ export class User {
   }
 
   static create(create: CreateUserProps): User {
+    if (!create.email) {
+      throw new EmailIsInvalidError();
+    }
     const props: UserProps = {
       ...create,
     };

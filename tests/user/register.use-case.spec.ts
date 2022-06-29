@@ -39,7 +39,7 @@ describe('RegisterUseCase', () => {
         email: 'admin@tsaaviacao.com.br',
       };
 
-      const user = new User({
+      const user = User.create({
         email: input.email,
       });
 
@@ -82,9 +82,17 @@ describe('RegisterUseCase', () => {
         email: '',
       };
 
+      const user = User.create({
+        email: input.email,
+      });
+
       const userRepositoryEmailExistsSpy = jest
         .spyOn(userRepository, 'existsEmail')
         .mockResolvedValue(false);
+
+      const userRepositorySaveSpy = jest
+        .spyOn(userRepository, 'save')
+        .mockResolvedValue();
 
       try {
         await registerUseCase.execute(input);
@@ -94,6 +102,7 @@ describe('RegisterUseCase', () => {
       }
 
       expect(userRepositoryEmailExistsSpy).toHaveBeenCalledWith(input.email);
+      expect(userRepositorySaveSpy).not.toHaveBeenCalledWith(user);
     });
   });
 });
