@@ -47,6 +47,9 @@ export class UserPrismaRepository implements IUserRepository {
       where,
       take,
       skip,
+      orderBy: {
+        email: 'asc',
+      },
     });
     const total = await this.prisma.user.count({
       where,
