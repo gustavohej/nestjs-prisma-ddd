@@ -10,12 +10,6 @@ export function PaginatedOutputBase<T>(classRef: Type<T>): Type<IPageInfo<T>> {
 
     @Field(() => Int)
     total: number;
-
-    @Field(() => Int)
-    totalPages: number;
-
-    @Field(() => Int)
-    currentPage: number;
   }
   return Paginated as Type<IPageInfo<T>>;
 }

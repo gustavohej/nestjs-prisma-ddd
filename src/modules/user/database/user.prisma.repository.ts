@@ -51,13 +51,9 @@ export class UserPrismaRepository implements IUserRepository {
     const total = await this.prisma.user.count({
       where,
     });
-    const totalPages = Math.ceil(total / take);
-    const currentPage = Math.ceil((skip + 1) / take);
     return {
       items: found.map((item) => User.create(item)),
       total,
-      totalPages,
-      currentPage,
     };
   }
 

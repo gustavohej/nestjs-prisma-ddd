@@ -44,8 +44,6 @@ describe('FindUsersUseCase', () => {
           }),
         ],
         total: 1,
-        totalPages: 1,
-        currentPage: 1,
       };
 
       const userRepositoryFindManyPaginatedSpy = jest

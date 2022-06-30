@@ -9,10 +9,8 @@ input FindUsersInput {
 }
 
 type PaginatedUsersOutput {
-  currentPage: Int!
   items: [UserOutput!]!
   total: Int!
-  totalPages: Int!
 }
 
 type Query {

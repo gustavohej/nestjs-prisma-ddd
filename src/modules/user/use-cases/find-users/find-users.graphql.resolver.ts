@@ -5,7 +5,7 @@ import { FindUsersInput } from './find-users.input.dto';
 import { FindUsersUseCase } from './find-users.use-case';
 
 @Resolver()
-export class FindUserGraphqlResolver {
+export class FindUsersGraphqlResolver {
   constructor(private readonly findUsersUseCase: FindUsersUseCase) {}
 
   @Query(() => PaginatedUsersOutput)
